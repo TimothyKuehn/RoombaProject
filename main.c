@@ -22,7 +22,7 @@
 #include "open_interface.h"
 #include "movement.h"
 #include "objects.h"
-#include "cyBot_Scan.h"
+#include "cyBot_Scan.h" //Replace
 
  struct Objects{
      float distance;
@@ -38,7 +38,7 @@
 
  void identifyObjects(float distances[]) {
 
-     cyBOT_Scan_t getScan;
+     cyBOT_Scan_t getScan; //Replace
      int i;
      int start = 0;
      int end = 0;
@@ -66,10 +66,10 @@
              //distance of object
              int j;
              float objectDistance = 0;
-             cyBOT_Scan(angle, &getScan);
+             cyBOT_Scan(angle, &getScan); //Replace
              timer_waitMillis(500);
              for(j = 0; j < 3; ++j){
-             cyBOT_Scan(angle, &getScan);
+             cyBOT_Scan(angle, &getScan); //Replace
              objectDistance += getScan.sound_dist;
              }
              objectDistance = objectDistance / 3;
@@ -107,14 +107,13 @@ int main(void) {
 
  timer_init();
  lcd_init();
- cyBot_uart_init();
- cyBOT_init_Scan(0b0111);
+ cyBot_uart_init(); //Replace
+ cyBOT_init_Scan(0b0111); //Replace
  uart_interrupt_init();
- //cyBOT_SERVO_cal();
 
- cyBOT_Scan_t getScan;
- right_calibration_value = 232750;
- left_calibration_value = 1251250;
+
+ cyBOT_Scan_t getScan; //Replace
+ 
 
 
 
@@ -128,12 +127,12 @@ float distances[91];
          int i;
          int j;
          numObjects = 0;
-         cyBOT_Scan(0,&getScan);
+         cyBOT_Scan(0,&getScan); //Replace
          timer_waitMillis(500);
          for(i = 0; i <= 180 ; i = i + 2){
              float avg_distance = 0;
              for(j = 0; j < 3; ++j){
-                 cyBOT_Scan(i, &getScan);
+                 cyBOT_Scan(i, &getScan); //Replace
                  float distance = (100000 / getScan.IR_raw_val);
                  avg_distance = avg_distance + distance;
              }

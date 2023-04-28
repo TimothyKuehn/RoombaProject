@@ -22,7 +22,7 @@
 void move_forward(oi_t *sensor_data, double distance_mm){
 
      double sum = 0;
-     oi_setWheels(200,200); //move forward at full speed
+     oi_setWheels(100,100); //move forward slowly
      while (sum < distance_mm) {
        oi_update(sensor_data);
        sum += sensor_data -> distance; //accumulate distance
@@ -46,7 +46,7 @@ void move_forward(oi_t *sensor_data, double distance_mm){
 void move_backward(oi_t *sensor_data, double distance_mm){
 
      double sum = 0;
-     oi_setWheels(-200,-200); //move forward at full speed
+     oi_setWheels(-100,-100); //move forward slowly
      while (sum < distance_mm) {
        oi_update(sensor_data);
        sum -= sensor_data -> distance; //accumulate distance
@@ -60,7 +60,7 @@ void stop(oi_t *sensor_data){
 }
 
 void turn_right(oi_t *sensor, double degrees){
-    oi_setWheels(-200,200);
+    oi_setWheels(-100,100);
     double sum = 0;
     while (sum < degrees) {
           oi_update(sensor);
@@ -70,7 +70,7 @@ void turn_right(oi_t *sensor, double degrees){
 }
 
 void turn_left(oi_t *sensor, double degrees) {
-    oi_setWheels(200,-200);
+    oi_setWheels(100,-100);
     double sum = 0;
      while (sum < degrees) {
            oi_update(sensor);
