@@ -110,6 +110,8 @@ int main(void) {
  cyBot_uart_init(); //Replace
  cyBOT_init_Scan(0b0111); //Replace
  uart_interrupt_init();
+ ping_init();
+ adc_init();
 
 
  cyBOT_Scan_t getScan; //Replace

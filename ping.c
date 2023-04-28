@@ -8,6 +8,8 @@
 #include "ping.h"
 #include "Timer.h"
 #include "lcd.h"
+#include <stdio.h>
+#include <stdint.h>
 #include <driverlib/interrupt.h>
 
 
@@ -114,6 +116,6 @@ float ping_getDistance (void){
     double distmm = width/16000.0; //distance in mm and time in ms
     double distcm = distmm * 34.3; //Convert to cm
 
-    lcd_printf("Pulse Width: %d\nTime(ms): %.3lf\nDistance(cm): %.2lf\nNumber of OF: %d", width, distmm,distcm, numOverflow);
+    //lcd_printf("Pulse Width: %d\nTime(ms): %.3lf\nDistance(cm): %.2lf\nNumber of OF: %d", width, distmm,distcm, numOverflow);
 
 }

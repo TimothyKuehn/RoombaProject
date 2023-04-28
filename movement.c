@@ -57,6 +57,8 @@ void move_backward(oi_t *sensor_data, double distance_mm){
 //stops the bot and backs up to scan
 void stop(oi_t *sensor_data){
           oi_setWheels(0,0); //stop
+          timer_waitMillis(500); //Wait half a second to prevent movement into hole.
+          
 }
 
 void turn_right(oi_t *sensor, double degrees){
