@@ -117,5 +117,5 @@ float ping_getDistance (void){
     double distcm = distmm * 34.3; //Convert to cm
 
     //lcd_printf("Pulse Width: %d\nTime(ms): %.3lf\nDistance(cm): %.2lf\nNumber of OF: %d", width, distmm,distcm, numOverflow);
-
+    return distcm;
 }

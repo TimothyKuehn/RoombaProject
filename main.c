@@ -46,13 +46,13 @@
      for(i = 0; i < 89; ++i){
 
          //detect first edge
-         if((distances[i] - distances[i + 1] > 30) && (obj == false)) {
+         if((distances[i] - distances[i + 1] > 10) && (obj == false)) {
             start = i;
             obj = true;
          }
 
          //detect second edge
-         if((distances[i + 1] - distances[i] > 30) &&
+         if((distances[i + 1] - distances[i] > 10) &&
              (start > 0) &&
              (obj == true)){
 
@@ -70,7 +70,7 @@
              timer_waitMillis(500);
              for(j = 0; j < 3; ++j){
              cyBOT_Scan(angle, &getScan); //Replace
-             objectDistance += getScan.sound_dist;
+             objectDistance += getScan.sound_dist; //Replace getScan
              }
              objectDistance = objectDistance / 3;
 
@@ -135,7 +135,7 @@ float distances[91];
              float avg_distance = 0;
              for(j = 0; j < 3; ++j){
                  cyBOT_Scan(i, &getScan); //Replace
-                 float distance = (100000 / getScan.IR_raw_val);
+                 float distance = (100000 / getScan.IR_raw_val); //Replace getScan
                  avg_distance = avg_distance + distance;
              }
              avg_distance = avg_distance / 3;
@@ -152,43 +152,43 @@ float distances[91];
 
      if(stop_flag == 1) {
          oi_setWheels(0,0);
-         stop_flag == 0;
+         stop_flag = 0;
      }
 
      if(forward_flag == 1){
          oi_update(sensor_data);
-         move_forward(sensor_data, 10);
+         double v = move_forward(sensor_data, 10);
          char forwardData[10];
-         sprintf(forwardData, "%f", sensor_data->distance);
+         sprintf(forwardData, "%f",v);
          uart_sendStr(forwardData);
-         forward_flag == 0;
+         forward_flag = 0;
      }
 
      if(back_flag == 1){
          oi_update(sensor_data);
-         move_backward(sensor_data, 10);
+         double v = move_backward(sensor_data, 10);
          char backData[10];
-         sprintf(backData, "%f", sensor_data->distance);
+         sprintf(backData, "%f", v);
          uart_sendStr(backData);
-         back_flag == 0;
+         back_flag = 0;
      }
 
      if(right_flag == 1){
          oi_update(sensor_data);
-         turn_right(sensor_data, 10);
+         double v = turn_right(sensor_data, 15);
          char rightData[10];
-         sprintf(rightData, "%f", sensor_data->distance);
+         sprintf(rightData, "%f", v);
          uart_sendStr(rightData);
-         right_flag == 0;
+         right_flag = 0;
      }
 
      if(left_flag == 1){
          oi_update(sensor_data);
-         turn_left(sensor_data, 10);
+         double v = turn_left(sensor_data, 15);
          char leftData[10];
-         sprintf(leftData, "%f", sensor_data->distance);
+         sprintf(leftData, "%f", v);
          uart_sendStr(leftData);
-         left_flag == 0;
+         left_flag = 0;
      }
 
 
@@ -201,7 +201,3 @@ float distances[91];
     oi_free(sensor_data);  // do this once at end of main()
  return 0;
  }
-
-
-     //oi_free(sensor_data);
-   //  return 0;
