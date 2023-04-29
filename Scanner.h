@@ -8,8 +8,10 @@
 #ifndef SCANNER_H_
 #define SCANNER_H_
 
+extern volatile int rawVal[];
+
 void scannerIR(void);
-float scannerPING(int angle);
+double scannerPING(int angle);
 
 
 
