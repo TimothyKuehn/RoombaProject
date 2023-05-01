@@ -42,11 +42,19 @@ int main(void)
 
         if (flag_m)
         {
-            distanceMoved = move_forward(sensor_data, 100);
+            distanceMoved = move_forward(sensor_data, 150);
             char returnString[20];
             sprintf(returnString, "D0!%lf", distanceMoved);
             uart_sendStr(returnString);
             flag_m = false;
+        }
+        if (flag_r)
+        {
+            distanceMoved = move_backward(sensor_data, 50);
+            char returnString[20];
+            sprintf(returnString, "D0!%lf", distanceMoved);
+            uart_sendStr(returnString);
+            flag_r = false;
         }
 
         if (flag_1)

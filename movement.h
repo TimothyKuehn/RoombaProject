@@ -18,15 +18,15 @@
 #ifndef MOVEMENT_H_
 #define MOVEMENT_H_
 
-void move_forward(oi_t *sensor_data, double distance_mm);
+double move_forward(oi_t *sensor_data, double distance_mm);
 
-void move_backward(oi_t *sensor_data, double distance_mm);
+double move_backward(oi_t *sensor_data, double distance_mm);
 
-void turn_left(oi_t *sensor, double degrees);
+double turn_left(oi_t *sensor, double degrees);
 
-void turn_right(oi_t *sensor, double degrees);
+double turn_right(oi_t *sensor, double degrees);
 
-void bump(oi_t *sensor_data);
+void stop();
 
 
 

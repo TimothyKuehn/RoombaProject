@@ -24,6 +24,7 @@ volatile int command_flag = 0; // flag to tell the main program a special comman
 volatile bool startup = false;
 volatile bool flag_m = false;
 volatile bool flag_s = false;
+volatile bool flag_r = false;
 volatile bool flag_1 = false;
 volatile bool flag_2 = false;
 volatile bool flag_3 = false;
@@ -179,6 +180,10 @@ void UART1_Handler(void)
         if (byte_received == 's')
         {
             flag_s = true;
+        }
+        if (byte_received == 'r')
+        {
+            flag_r = true;
         }
         if (byte_received == '1')
         {

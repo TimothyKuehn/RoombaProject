@@ -33,6 +33,7 @@ extern volatile char command_byte; // byte value for special character used as a
 extern volatile int command_flag; // flag to tell the main program a special command was received
 extern volatile bool flag_m;
 extern volatile bool flag_s;
+extern volatile bool flag_r;
 extern volatile bool flag_1;
 extern volatile bool flag_2;
 extern volatile bool flag_3;
