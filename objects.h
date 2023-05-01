@@ -17,11 +17,14 @@
 
 #ifndef OBJECTS_H_
 #define OBJECTS_H_
+typedef struct Objects;
 
 
 
-void printObjectArr(struct Objects *arr,int numObjects);
-void printToPutty(float distance, int i);
+void sendObjectArr(struct Objects *arr[]);
+//void identifyObjects(float distances[], Objects *objectArr[]);
+
+
 
 
 

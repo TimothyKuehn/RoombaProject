@@ -8,8 +8,6 @@
 #include "ping.h"
 #include "Timer.h"
 #include "lcd.h"
-#include <stdio.h>
-#include <stdint.h>
 #include <driverlib/interrupt.h>
 
 
@@ -101,7 +99,7 @@ void TIMER3B_Handler(void){
 
 
 
-float ping_getDistance (void){
+double ping_getDistance (void){
 
     ping_trigger();
 
@@ -118,4 +116,5 @@ float ping_getDistance (void){
 
     //lcd_printf("Pulse Width: %d\nTime(ms): %.3lf\nDistance(cm): %.2lf\nNumber of OF: %d", width, distmm,distcm, numOverflow);
     return distcm;
+
 }

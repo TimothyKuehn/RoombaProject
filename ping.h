@@ -9,8 +9,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <inc/tm4c123gh6pm.h>
+#include <uart-interrupt.h>
 #include "driverlib/interrupt.h"
-#include "uart-interrupt.h"
 
 
 /**
@@ -33,6 +33,6 @@ void TIMER3B_Handler(void);
  *
  * @return Distance in cm
  */
-float ping_getDistance (void);
+double ping_getDistance (void);
 
 #endif /* PING_H_ */

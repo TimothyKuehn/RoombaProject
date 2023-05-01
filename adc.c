@@ -1,19 +1,12 @@
-/*
- * adc.c
- *
- *  Created on: Mar 28, 2023
- *      Author: jtyost
- */
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdlib.h>
-#include <inc/tm4c123gh6pm.h>
-#include "lcd.h"
-#include "Timer.h"
-#include "adc.h"
-
-void adc_init(void) {
+# include <adc.h>
+# include "Timer.h"
+//a
+//c
+//g
+//e
+//i
+//j
+void ADC0_Init(void) {
       SYSCTL_RCGCADC_R |= 0x1;   // 1) activate ADC0
       SYSCTL_RCGCGPIO_R |= 0x2;    // 2) activate clock for Port B
       while((SYSCTL_PRGPIO_R & 0x2) != 0x2){};  // 3 for stabilization
@@ -31,14 +24,14 @@ void adc_init(void) {
       ADC0_ACTSS_R |= 0x0008;       // 15) enable sample sequencer 3
 }
 
+int read(void){
+    int value;
+    ADC0_PSSI_R |= 0x08;
+    while(ADC0_RIS_R & 0x08){
 
-uint16_t adc_read(void) {
-      uint32_t result;
-      ADC0_PSSI_R = 0x0008;
-      while((ADC0_RIS_R & 0x08) == 0) {};
-      result = ADC0_SSFIFO3_R & 0xFFF;
-      ADC0_ISC_R = 0x0008;
-      return result;
+    }
+    timer_waitMillis(500);
+    ADC0_ISC_R |= 0x08;
+    value = (ADC0_SSFIFO3_R & 0x00000FFF);
+    return value;
 }
-
-

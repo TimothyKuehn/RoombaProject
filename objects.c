@@ -15,76 +15,65 @@
 #include "lcd.h"
 #include "open_interface.h"
 #include "movement.h"
-#include "cyBot_Scan.h"
+//#include "Scanner.h"
+
+typedef struct {
+    float distance;
+    int angle;
+    float width;
+}Objects;
 
 
+void identifyObjects(float distances[], Objects *objectArr) {
 
+     int numObjects = sizeof(objectArr);
+     int i;
+     int start = 0;
+     int end = 0;
+     _Bool inObj = false;
+     for(i = 0; i < 89; ++i){
 
-struct Objects{
-     float distance;
-     int angle;
-     float radialWidth;
- };
+         //detect first edge
+         if((distances[i] - distances[i + 1] > 10) && (inObj == false)) {
+            start = i;
+            inObj = true;
+         }
 
+         //detect second edge
+         if((distances[i + 1] - distances[i] > 10) &&
+             (start > 0) &&
+             (inObj == true))
+         {
+             end = i;
+             inObj = false;
 
+             //calculate average angle of object
+             double angle = start + end;
+             objectArr[numObjects].angle = angle;
 
-void printToPutty(float distance, int i) {
+             //distance of object
+             float objectDistance = scannerPING(angle);
+             objectArr[numObjects].distance = objectDistance;
 
-        //cyBot_sendByte("angle\t");
-        //cyBot_sendByte(i);
-        //char space[] = " ";
-        //cyBot_sendByte(space);
-        //printf("%d ",i);
+             //radial width
+             float width = 4 * 3.14 * objectDistance * ((end - start) / 360.0);
+             objectArr[numObjects].width = width;
+             if(width > 5){
+                 numObjects = numObjects + 1;
+             }
+         }
+     }
+ }
 
-        //prints the angle in putty
-        char ang[5];
-        sprintf(ang,"%d",i);
-        int len = strlen(ang);
-        int h;
-        for(h = 0; h < len; ++h){
-            cyBot_sendByte(ang[h]);
-            printf("%c",ang[h]);
-        }
+void sendObjectArr(Objects* arr) {
 
-        //prints a tab to the putty
-        int g;
-        char tab[] = "\t";
-        for(g = 0; g < 2; ++g){
-        cyBot_sendByte(tab[g]);
-        }
-        printf("\t");
-
-
-        //prints the distance in putty
-        char dis[10];
-        sprintf(dis,"%.2f",distance);
-        int l = strlen(dis);
-        int j;
-        for(j = 0; j < l; ++j){
-            cyBot_sendByte(dis[j]);
-            printf("%c",dis[j]);
-        }
-
-        //sends a newline and return to the putty
-        int k;
-        char newLine[] = "\n\r";
-        for(k = 0; k < 4; ++k){
-            cyBot_sendByte(newLine[k]);
-        }
-        //cyBot_sendByte("\n");
-        printf("\n");
-
-    }
-
-
-void printObjectArr(struct Objects* arr, int numObjects) {
-
+    int numObjects = sizeof(arr);
     char objects[numObjects][100];
     int i;
     for (i = 0; i < numObjects; ++i){
         float dist = arr[i].distance;
         int angle = arr[i].angle;
-        float rad = arr[i].radialWidth;
+        float rad = arr[i].width;
         sprintf(objects[i], "I%d!%d!%d", angle, dist, rad);
     }
 
@@ -103,12 +92,3 @@ void printObjectArr(struct Objects* arr, int numObjects) {
     uart_sendStr(st);
 
 }
-
-
-
-
-
-
-
-
-

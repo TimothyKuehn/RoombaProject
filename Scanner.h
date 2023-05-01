@@ -9,7 +9,7 @@
 #define SCANNER_H_
 
 extern volatile int rawVal[];
-
+extern volatile uint16_t last;
 void scannerIR(void);
 double scannerPING(int angle);
 
