@@ -5,12 +5,18 @@
  *      Author: gboes
  */
 
+#include "adc.h"
+#include "servo.h"
+#include "Timer.h"
+#include "lcd.h"
+#include "ping.h"
+
 #ifndef SCANNER_H_
 #define SCANNER_H_
 
-extern volatile int rawVal[];
-extern volatile uint16_t last;
-void scannerIR(void);
+extern float rawVal[];
+
+void scannerIR();
 double scannerPING(int angle);
 
 

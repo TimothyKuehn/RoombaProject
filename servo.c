@@ -8,6 +8,13 @@
 
 
 void servo_init(void){
+
+    SYSCTL_RCGCTIMER_R |= 0x2;
+    SYSCTL_RCGCGPIO_R |= 0x2;
+
+    while ((SYSCTL_PRTIMER_R & 0x2) == 0) {};
+    while ((SYSCTL_PRGPIO_R & 0x2) == 0) {};
+
     GPIO_PORTB_DEN_R |= 0x20;
     GPIO_PORTB_AFSEL_R |= 0x20;
     GPIO_PORTB_PCTL_R |= 0x00700000;
@@ -23,20 +30,20 @@ void servo_init(void){
     timer_waitMillis(1000);
 
 }
-uint16_t move_servo(uint16_t degrees, uint16_t last){
+uint16_t servo_move(uint16_t degrees, uint16_t last){
 
   double right = .45; //0 degrees
 
-  double left = 2.15; //180 degrees
+  double left = 2.2; //180 degrees
 
   double degreetolowtime = ((left - right)/ 180) * (double)degrees + right;
 
   double timeinMs = 20 - degreetolowtime;
 
-  int Cycles = timeinMs * 16000;
+  int cycles = timeinMs * 16000;
 
   TIMER1_TBPMR_R = 0x4;
-  TIMER1_TBMATCHR_R = Cycles - 0x40000;
+  TIMER1_TBMATCHR_R = cycles - 0x40000;
 
   int waitTime = (abs(degrees - last)) * 10;
   timer_waitMillis(waitTime);
