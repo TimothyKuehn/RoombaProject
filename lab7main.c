@@ -13,16 +13,9 @@
 #include "uart-interrupt.h"
 #include "open_interface.h"
 #include "movement.h"
+#include "music.h"
 #include <stdbool.h>
 #include "driverlib/interrupt.h"
-
-// Uncomment or add any include directives that you want to use
-// #include "open_interface.h"
-// #include "movement.h"
-// #include "button.h"
-
-// Your code can use the global variables defined in uart-interrupt.c
-// They are declared with the extern qualifier in uart-interrupt.h, which makes the variables visible to this file.
 
 int main(void)
 {
@@ -37,12 +30,14 @@ int main(void)
     double angleTurned;
     while (1)
     {
+
+
         distanceMoved = 0;
         angleTurned = 0;
 
         if (flag_m)
         {
-            distanceMoved = move_forward(sensor_data, 150);
+            distanceMoved = move_forward(sensor_data, 148.9);
             char returnString[20];
             sprintf(returnString, "D0!%lf", distanceMoved);
             uart_sendStr(returnString);
@@ -50,7 +45,7 @@ int main(void)
         }
         if (flag_r)
         {
-            distanceMoved = move_backward(sensor_data, 50);
+            distanceMoved = move_backward(sensor_data, 49);
             char returnString[20];
             sprintf(returnString, "D0!%lf", distanceMoved);
             uart_sendStr(returnString);
@@ -59,7 +54,7 @@ int main(void)
 
         if (flag_1)
         {
-            angleTurned = turn_left(sensor_data, 90);
+            angleTurned = turn_left(sensor_data, 89.6);
             char returnString[20];
             sprintf(returnString, "D%lf!0", angleTurned);
             uart_sendStr(returnString);
@@ -67,7 +62,7 @@ int main(void)
         }
         if (flag_2)
         {
-            angleTurned = turn_left(sensor_data, 45);
+            angleTurned = turn_left(sensor_data, 44.8);
             char returnString[20];
             sprintf(returnString, "D%lf!0", angleTurned);
             uart_sendStr(returnString);
@@ -95,7 +90,7 @@ int main(void)
         }
         if (flag_5)
         {
-            angleTurned = turn_right(sensor_data, 45);
+            angleTurned = turn_right(sensor_data, 44.8);
             char returnString[20];
             sprintf(returnString, "D%lf!0", angleTurned);
             uart_sendStr(returnString);
@@ -103,12 +98,17 @@ int main(void)
         }
         if (flag_6)
         {
-            angleTurned = turn_right(sensor_data, 90);
+            angleTurned = turn_right(sensor_data, 89.6);
             char returnString[20];
             sprintf(returnString, "D%lf!0", angleTurned);
             uart_sendStr(returnString);
             flag_6 = false;
-
+        }
+        if(flag_c)
+        {
+            load_songs();
+            play_songs(1);
+            flag_c = false;
         }
 
     }

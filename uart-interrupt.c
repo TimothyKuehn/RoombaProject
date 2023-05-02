@@ -23,6 +23,7 @@ volatile char command_byte = 0; // byte value for special character used as a co
 volatile int command_flag = 0; // flag to tell the main program a special command was received
 volatile bool startup = false;
 volatile bool flag_m = false;
+volatile bool flag_c = false;
 volatile bool flag_s = false;
 volatile bool flag_r = false;
 volatile bool flag_1 = false;
@@ -208,6 +209,10 @@ void UART1_Handler(void)
         if (byte_received == '6')
         {
             flag_6 = true;
+        }
+        if (byte_received == 'c')
+        {
+            flag_c = true;
         }
 
         //AS NEEDED

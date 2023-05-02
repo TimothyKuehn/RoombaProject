@@ -27,7 +27,20 @@ double move_forward(oi_t *sensor_data, double distance_mm)
     {
         oi_update(sensor_data);
         sum += sensor_data->distance; //accumulate distance
-
+        if (sensor_data->cliffFrontLeft)
+        {
+            stop();
+            sprintf(string, "C1");
+            uart_sendStr(string);
+            return sum;
+        }
+        if (sensor_data->cliffFrontRight)
+        {
+            stop();
+            sprintf(string, "C2");
+            uart_sendStr(string);
+            return sum;
+        }
         if (sensor_data->bumpRight)
         {
             stop();
@@ -49,31 +62,11 @@ double move_forward(oi_t *sensor_data, double distance_mm)
             uart_sendStr(string);
             return sum;
         }
-        if (sensor_data->cliffFrontLeft)
-        {
-            stop();
-            sprintf(string, "C1");
-            uart_sendStr(string);
-            return sum;
-        }
-        if (sensor_data->cliffFrontRight)
-        {
-            stop();
-            sprintf(string, "C2");
-            uart_sendStr(string);
-            return sum;
-        }
+
         if (sensor_data->cliffRight)
         {
             stop();
             sprintf(string, "C3");
-            uart_sendStr(string);
-            return sum;
-        }
-        if (sensor_data->cliffLeftSignal > 2700)
-        {
-            stop();
-            sprintf(string, "L0");
             uart_sendStr(string);
             return sum;
         }
@@ -91,6 +84,14 @@ double move_forward(oi_t *sensor_data, double distance_mm)
             uart_sendStr(string);
             return sum;
         }
+        if (sensor_data->cliffLeftSignal > 2700)
+        {
+            stop();
+            sprintf(string, "L0");
+            uart_sendStr(string);
+            return sum;
+        }
+
         if (sensor_data->cliffRightSignal > 2700)
         {
             stop();
@@ -117,7 +118,7 @@ double move_backward(oi_t *sensor_data, double distance_mm)
         sum -= sensor_data->distance; //accumulate distance
     }
     oi_setWheels(0, 0); //stop
-    return (-1*sum);
+    return (-1 * sum);
 }
 
 //stops the bot and backs up to scan
@@ -130,7 +131,7 @@ void stop()
 
 double turn_right(oi_t *sensor, double degrees)
 {
-    oi_setWheels(-100, 100);
+    oi_setWheels(-50, 50);
     double sum = 0;
     while (sum < degrees)
     {
@@ -143,7 +144,7 @@ double turn_right(oi_t *sensor, double degrees)
 
 double turn_left(oi_t *sensor, double degrees)
 {
-    oi_setWheels(100, -100);
+    oi_setWheels(50, -50);
     double sum = 0;
     while (sum < degrees)
     {
