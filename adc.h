@@ -20,6 +20,6 @@ void adc_init(void);
 
 uint16_t adc_read(void);
 
-float adc_distance(void);
+double adc_distance(void);
 
 #endif /* ADC_H_ */

@@ -10,6 +10,7 @@
 #include "ping.h"
 
 
+
 float rawVal[180];
 void scannerIR()
 {
@@ -37,16 +38,17 @@ double scannerPING(int angle)
 {
     uint16_t last = 90;
     last = servo_move(angle,last);
-    timer_waitMillis(20);
+    timer_waitMillis(40);
     int avg = 0;
-    int j;
-    for(j = 0; j < 10; ++j){
+          int j;
+          for(j = 0; j < 10; ++j){
 
-        avg = (avg + ping_getDistance()); //Likely the Problem
+              avg = (avg + ping_getDistance()); //Likely the Problem
+          }
+          avg = (avg/10);
+          return avg;
     }
-    avg = (avg/10);
-    return avg;
-}
+
 
 double IRDist(int angle){
 
@@ -57,7 +59,7 @@ double IRDist(int angle){
       int j;
       for(j = 0; j < 10; ++j){
 
-          avg = (avg + adc_distance()); //Likely the Problem
+          avg = (avg + adc_distance());
       }
       avg = (avg/10);
       return avg;

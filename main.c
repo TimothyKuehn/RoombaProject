@@ -36,10 +36,10 @@ int main(void)
     uart_interrupt_init();
     servo_init();
     ping_init();
-    char startupMessage[] = "STARTUP MESSAGE";
-    lcd_printf(startupMessage);
-    double distanceMoved;
-    double angleTurned;
+  //  char startupMessage[] = "STARTUP MESSAGE";
+   // lcd_printf(startupMessage);
+    float distanceMoved;
+    float angleTurned;
     while (1)
     {
         distanceMoved = 0;
@@ -80,16 +80,8 @@ int main(void)
         }
         if (flag_s)
         {
-            int i = 0;
-            float dist[180];
-            timer_waitMillis(10);
             scannerIR();
-
-            for(i= 0; i < 180; ++i){
-                dist[i] = rawVal[i];
-            }
-            identifyObjects(dist);
-            lcd_printf("m");
+            identifyObjects(rawVal);
 
         }
         if (flag_4)

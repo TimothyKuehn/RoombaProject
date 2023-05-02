@@ -26,7 +26,7 @@ double turn_left(oi_t *sensor, double degrees);
 
 double turn_right(oi_t *sensor, double degrees);
 
-void stop(oi_t *sensor_data);
+void stop();
 
 
 

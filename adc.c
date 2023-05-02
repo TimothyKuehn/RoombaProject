@@ -41,12 +41,13 @@ uint16_t adc_read(void) {
       ADC0_ISC_R = 0x0008;
       return result;
 }
-float adc_distance(void){
-    uint16_t scan;
-    float result;
+double adc_distance(void){
+    double scan;
+    double result;
 
     scan = adc_read();
-    result = 197656 * pow(scan,-1.25);
+    scan = (1/scan);
+    result = (10.07143 * scan);
 
     return result;
 }

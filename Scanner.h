@@ -11,6 +11,7 @@
 #include "lcd.h"
 #include "ping.h"
 
+
 #ifndef SCANNER_H_
 #define SCANNER_H_
 
