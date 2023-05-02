@@ -33,9 +33,9 @@ int main(void)
     oi_init(sensor_data); // do this only once at start of main()
     lcd_init();
     adc_init();
+    uart_interrupt_init();
     servo_init();
     ping_init();
-    uart_interrupt_init();
     char startupMessage[] = "STARTUP MESSAGE";
     lcd_printf(startupMessage);
     double distanceMoved;
@@ -89,6 +89,7 @@ int main(void)
                 dist[i] = rawVal[i];
             }
             identifyObjects(dist);
+            lcd_printf("m");
 
         }
         if (flag_4)

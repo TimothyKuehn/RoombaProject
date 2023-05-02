@@ -14,7 +14,7 @@ float rawVal[180];
 void scannerIR()
 {
 
-    servo_init();
+   // servo_init();
     uint16_t last = 90;
     last = servo_move(0,last);
     int i;
@@ -35,10 +35,9 @@ void scannerIR()
 
 double scannerPING(int angle)
 {
-    servo_init();
-    ping_init();
     uint16_t last = 90;
     last = servo_move(angle,last);
+    timer_waitMillis(20);
     int avg = 0;
     int j;
     for(j = 0; j < 10; ++j){
@@ -48,3 +47,20 @@ double scannerPING(int angle)
     avg = (avg/10);
     return avg;
 }
+
+double IRDist(int angle){
+
+    uint16_t last = 90;
+      last = servo_move(angle,last);
+      timer_waitMillis(20);
+      int avg = 0;
+      int j;
+      for(j = 0; j < 10; ++j){
+
+          avg = (avg + adc_distance()); //Likely the Problem
+      }
+      avg = (avg/10);
+      return avg;
+}
+
+

@@ -18,6 +18,7 @@ extern float rawVal[];
 
 void scannerIR();
 double scannerPING(int angle);
+double IRDist(int angle);
 
 
 

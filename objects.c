@@ -26,11 +26,10 @@ typedef struct
     float width;
 } Objects;
 
-void sendObjectArr(Objects *arr)
+void sendObjectArr(Objects *arr, int numObjects)
 {
 
-    int numObjects = sizeof(arr);
-    char objects[numObjects][100];
+    char objects[10][50];
     int i;
     for (i = 0; i < numObjects; ++i)
     {
@@ -156,7 +155,7 @@ void printObjectArr(Objects *arr, int numObjects) {
 }
 
 void identifyObjects(float inputDistances[]){
-
+    flag_s = false;
     int j;
     float distances[180];
     for (j = 0; j < 180; j++)
@@ -175,26 +174,26 @@ void identifyObjects(float inputDistances[]){
     {
 
         //detect first edge
-        if ((distances[i] - distances[i + 1] > 30) && (!inObj)){
+        if ((distances[i] - distances[i + 1] > 10) && (!inObj)&& distances[i+1]<90){
             start = i;
             inObj = true;
         }
 
         //detect second edge
         if (start > 0){
-            if ((distances[i + 1] - distances[i] > 23) && (inObj)){
+            if ((distances[i + 1] - distances[i] > 10) && (inObj)){
 
 
 
                 end = i;
-                if ((end - start) > 4){
+                if ((end - start) > 9){
 
                     //calculate average angle of object
                     int angle = (start + end)/2;
                     objectArr[numObjects].angle = angle;
 
                     //distance of object
-                    float objectDistance = scannerPING(angle); //fails here sometime, check after sendObjectArr is fixed.
+                    float objectDistance = IRDist(angle); //fails here sometime, check after sendObjectArr is fixed.
                     objectArr[numObjects].distance = objectDistance;
 
                     //radial width
@@ -209,8 +208,9 @@ void identifyObjects(float inputDistances[]){
         }
 
 
-if(numObjects > 0){
+if(numObjects > 0)
+{
     printObjectArr(objectArr,numObjects);
-    sendObjectArr(objectArr); // Breaks the Program*** NEED FIXING
+   // sendObjectArr(objectArr,numObjects); // Breaks the Program*** NEED FIXING
     }
 }
