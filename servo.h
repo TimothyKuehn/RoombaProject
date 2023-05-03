@@ -13,6 +13,6 @@
 
 void servo_init(void);
 
-uint16_t move_servo(uint16_t degrees, uint16_t last);
+uint16_t servo_move(uint16_t degrees, uint16_t last);
 
 #endif /* SERVO_H_ */

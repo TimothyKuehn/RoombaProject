@@ -11,6 +11,7 @@
 #include <inc/tm4c123gh6pm.h>
 #include "lcd.h"
 #include "Timer.h"
+#include "math.h"
 #include "adc.h"
 
 void adc_init(void) {
@@ -39,6 +40,16 @@ uint16_t adc_read(void) {
       result = ADC0_SSFIFO3_R & 0xFFF;
       ADC0_ISC_R = 0x0008;
       return result;
+}
+double adc_distance(void){
+    double scan;
+    double result;
+
+    scan = adc_read();
+    scan = (1/scan);
+    result = (10.07143 * scan);
+
+    return result;
 }
 
 

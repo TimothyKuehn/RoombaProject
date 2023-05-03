@@ -10,6 +10,8 @@
 #include <stdbool.h>
 #include <inc/tm4c123gh6pm.h>
 #include "driverlib/interrupt.h"
+#include <Timer.h>
+#include <timer.h>
 #include "uart-interrupt.h"
 
 

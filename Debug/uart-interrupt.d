@@ -21,7 +21,7 @@ uart-interrupt.obj: ../lcd.h
 uart-interrupt.obj: C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/include/stdio.h
 uart-interrupt.obj: C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/include/stdarg.h
 uart-interrupt.obj: ../Timer.h
-uart-interrupt.obj: U:/TempWorkspace/Lab7/cyBot_Scan.h
+uart-interrupt.obj: U:/TempWorkspace/FinalProject/cyBot_Scan.h
 uart-interrupt.obj: ../movement.h
 uart-interrupt.obj: C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/include/stdlib.h
 uart-interrupt.obj: C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/include/math.h
@@ -72,7 +72,7 @@ C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/include/stdarg.h:
 
 ../Timer.h:
 
-U:/TempWorkspace/Lab7/cyBot_Scan.h:
+U:/TempWorkspace/FinalProject/cyBot_Scan.h:
 
 ../movement.h:
 

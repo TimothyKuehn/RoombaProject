@@ -10,13 +10,18 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./Scanner.obj" \
 "./Timer.obj" \
+"./adc.obj" \
 "./button.obj" \
-"./lab7main.obj" \
 "./lcd.obj" \
+"./main.obj" \
 "./movement.obj" \
 "./music.obj" \
+"./objects.obj" \
 "./open_interface.obj" \
+"./ping.obj" \
+"./servo.obj" \
 "./tm4c123gh6pm_startup_ccs.obj" \
 "./uart-interrupt.obj" \
 "../libcybotScan.lib" \
@@ -130,42 +135,42 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-Lab7.out \
+FinalProject.out \
 
 EXE_OUTPUTS__QUOTED += \
-"Lab7.out" \
+"FinalProject.out" \
 
 BIN_OUTPUTS += \
-Lab7.hex \
+FinalProject.hex \
 
 BIN_OUTPUTS__QUOTED += \
-"Lab7.hex" \
+"FinalProject.hex" \
 
 
 # All Target
 all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
-	@$(MAKE) --no-print-directory -Onone "Lab7.out"
+	@$(MAKE) --no-print-directory -Onone "FinalProject.out"
 
 # Tool invocations
-Lab7.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
+FinalProject.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Linker'
-	"C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=PART_TM4C123GH6PM -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"Lab7.map" --heap_size=8192 --stack_size=4096 -i"C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/lib" -i"C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="Lab7_linkInfo.xml" --rom_model -o "Lab7.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=PART_TM4C123GH6PM -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"FinalProject.map" --heap_size=8192 --stack_size=4096 -i"C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/lib" -i"C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="FinalProject_linkInfo.xml" --rom_model -o "FinalProject.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
-Lab7.hex: $(EXE_OUTPUTS)
+FinalProject.hex: $(EXE_OUTPUTS)
 	@echo 'Building secondary target: "$@"'
 	@echo 'Invoking: Arm Hex Utility'
-	"C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/bin/armhex" --diag_wrap=off -o "Lab7.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/bin/armhex" --diag_wrap=off -o "FinalProject.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building secondary target: "$@"'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "Timer.obj" "button.obj" "lab7main.obj" "lcd.obj" "movement.obj" "music.obj" "open_interface.obj" "tm4c123gh6pm_startup_ccs.obj" "uart-interrupt.obj" 
-	-$(RM) "Timer.d" "button.d" "lab7main.d" "lcd.d" "movement.d" "music.d" "open_interface.d" "tm4c123gh6pm_startup_ccs.d" "uart-interrupt.d" 
+	-$(RM) "Scanner.obj" "Timer.obj" "adc.obj" "button.obj" "lcd.obj" "main.obj" "movement.obj" "music.obj" "objects.obj" "open_interface.obj" "ping.obj" "servo.obj" "tm4c123gh6pm_startup_ccs.obj" "uart-interrupt.obj" 
+	-$(RM) "Scanner.d" "Timer.d" "adc.d" "button.d" "lcd.d" "main.d" "movement.d" "music.d" "objects.d" "open_interface.d" "ping.d" "servo.d" "tm4c123gh6pm_startup_ccs.d" "uart-interrupt.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

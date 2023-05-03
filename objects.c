@@ -14,162 +14,219 @@
 #include <inc/tm4c123gh6pm.h>
 #include "lcd.h"
 #include "open_interface.h"
+#include "uart-interrupt.h"
 #include "movement.h"
-#include "cyBot_Scan.h"
+#include "Scanner.h"
+#include "ping.h"
 
+typedef struct
+{
+    float distance;
+    int angle;
+    float width;
+} Objects;
 
+void sendObjectArr(Objects *arr, int numObjects)
+{
 
-
-struct Objects{
-     float distance;
-     int angle;
-     float radialWidth;
- };
-
-
-
-void printToPutty(float distance, int i) {
-
-        //cyBot_sendByte("angle\t");
-        //cyBot_sendByte(i);
-        //char space[] = " ";
-        //cyBot_sendByte(space);
-        //printf("%d ",i);
-
-        //prints the angle in putty
-        char ang[5];
-        sprintf(ang,"%d",i);
-        int len = strlen(ang);
-        int h;
-        for(h = 0; h < len; ++h){
-            cyBot_sendByte(ang[h]);
-            printf("%c",ang[h]);
-        }
-
-        //prints a tab to the putty
-        int g;
-        char tab[] = "\t";
-        for(g = 0; g < 2; ++g){
-        cyBot_sendByte(tab[g]);
-        }
-        printf("\t");
-
-
-        //prints the distance in putty
-        char dis[10];
-        sprintf(dis,"%.2f",distance);
-        int l = strlen(dis);
-        int j;
-        for(j = 0; j < l; ++j){
-            cyBot_sendByte(dis[j]);
-            printf("%c",dis[j]);
-        }
-
-        //sends a newline and return to the putty
-        int k;
-        char newLine[] = "\n\r";
-        for(k = 0; k < 4; ++k){
-            cyBot_sendByte(newLine[k]);
-        }
-        //cyBot_sendByte("\n");
-        printf("\n");
-
-    }
-
-
-void printObjectArr(struct Objects* arr, int numObjects) {
-
+    char objects[10][50];
     int i;
-    for (i = 0; i < numObjects; ++i){
+    for (i = 0; i < numObjects; ++i)
+    {
         float dist = arr[i].distance;
         int angle = arr[i].angle;
-        float rad = arr[i].radialWidth;
+        float rad = arr[i].width;
+        sprintf(objects[i], "%d!%.2f!%.2f", angle, dist, rad);
+    }
 
-        printf("Object %d\n",i+1);
-        printf("Distance %.2f\n",dist);
-        printf("Angle %d\n",angle);
-        printf("Radial Width %.2f\n",rad);
+    char st[200] = "I";
+    for (i = 0; i < numObjects; ++i)
+    {
+        // int j;
+        //   for(j = 0; j< strlen(objects[i]); ++j){
+        char object[50];
+        strcpy(object, objects[i]);
+        strcat(st, object);
+
+        if (numObjects - i > 1)
+        {
+            char end[] = "@";
+            strcat(st, end);
+        }
+    }
+
+    printf(st);
+    uart_sendStr(st);
+
+}
+void clearObjects(Objects *arr)
+{
+//    int i;
+//    for (i = 0; i < 180; ++i)
+//    {
+//        arr[i].distance = 0;
+//        arr[i].width = 0;
+//        arr[i].angle = 0;
+//    }
+}
+void printObjectArr(Objects *arr, int numObjects)
+{
+
+    int i;
+    for (i = 0; i < numObjects; ++i)
+    {
+        float dist = arr[i].distance;
+        int angle = arr[i].angle;
+        float rad = arr[i].width;
+
+        printf("Object %d\n", i + 1);
+        printf("Distance %.2f\n", dist);
+        printf("Angle %d\n", angle);
+        printf("Radial Width %.2f\n", rad);
         printf("\n");
 
         //prints object number
         char num[2];
-        sprintf(num,"%d",i + 1);
-        int b;
-        for(b = 0; b < 2; ++b){
-        cyBot_sendByte(num[b]);
+        sprintf(num, "%d", i + 1);
+        int b = 0;
+        for (b = 0; b < 2; ++b)
+        {
+            uart_sendChar(num[b]);
         }
 
         //prints a tab to the putty
         int z;
         char tab[] = "\t";
-        for(z = 0; z < 2; ++z){
-        cyBot_sendByte(tab[z]);
+        for (z = 0; z < 2; ++z)
+        {
+            uart_sendChar(tab[z]);
         }
         printf("\t");
 
         //prints the distance in putty
-                char dis[10];
-                sprintf(dis,"%.2f",dist);
-                int l = strlen(dis);
-                int j;
-                for(j = 0; j < l; ++j){
-                    cyBot_sendByte(dis[j]);
-                    printf("%c",dis[j]);
-                }
+        char dis[10];
+        sprintf(dis, "%.2f", dist);
+        int l = strlen(dis);
+        int j;
+        for (j = 0; j < l; ++j)
+        {
+            uart_sendChar(dis[j]);
+            printf("%c", dis[j]);
+        }
 
-                //prints a tab to the putty
-                int g;
-                char tab2[] = "\t";
-                for(g = 0; g < 2; ++g){
-                cyBot_sendByte(tab2[g]);
-                }
-                printf("\t");
+        //prints a tab to the putty
+        int g;
+        char tab2[] = "\t";
+        for (g = 0; g < 2; ++g)
+        {
+            uart_sendChar(tab2[g]);
+        }
+        printf("\t");
 
         //angle to putty
         char ang[5];
-        sprintf(ang,"%d",angle);
+        sprintf(ang, "%d", angle);
         int len = strlen(ang);
         int h;
-        for(h = 0; h < len; ++h){
-            cyBot_sendByte(ang[h]);
-            printf("%c",ang[h]);
+        for (h = 0; h < len; ++h)
+        {
+            uart_sendChar(ang[h]);
+            printf("%c", ang[h]);
         }
 
         //prints a tab to the putty
         int v;
         char tab3[] = "\t";
-        for(v = 0; v < 2; ++v){
-        cyBot_sendByte(tab3[v]);
+        for (v = 0; v < 2; ++v)
+        {
+            uart_sendChar(tab3[v]);
         }
         printf("\t");
 
         //prints the radialWidth in putty
-                char rw[10];
-                sprintf(rw,"%.2f",rad*2);
-                int x = strlen(rw);
-                int c;
-                for(c = 0; c < x; ++c){
-                    cyBot_sendByte(rw[c]);
-                    printf("%c",rw[c]);
-                }
+        char rw[10];
+        sprintf(rw, "%.2f", rad);
+        int x = strlen(rw);
+        int c;
+        for (c = 0; c < x; ++c)
+        {
+            uart_sendChar(rw[c]);
+            printf("%c", rw[c]);
+        }
 
-                //sends a newline and return to the putty
-                       int k;
-                       char newLine[] = "\n\r";
-                       for(k = 0; k < 4; ++k){
-                           cyBot_sendByte(newLine[k]);
-                       }
-                       //cyBot_sendByte("\n");
-                       printf("\n");
+        //sends a newline and return to the putty
+        int k;
+        char newLine[] = "\n\r";
+        for (k = 0; k < 4; ++k)
+        {
+            uart_sendChar(newLine[k]);
+        }
+        //cyBot_sendByte("\n");
+        printf("\n");
     }
 
 }
 
+void identifyObjects(float inputDistances[])
+{
+    flag_s = false;
+    int j;
+    float distances[180];
+    for (j = 0; j < 180; j++)
+    {
+        distances[j] = 100000 / (*(inputDistances + j));
+    }
 
+    Objects objectArr[20];
+    clearObjects(objectArr);
+    int numObjects = 0;
+    int i;
+    int start = 0;
+    int end = 0;
+    bool inObj = false;
+    for (i = 0; i < 179; ++i)
+    {
 
+        //detect first edge
+        if ((distances[i] - distances[i + 1] > 10) && (!inObj)) // may need to change the 90 once on the test field
+        {
+            start = i;
+            inObj = true;
+        }
 
+        //detect second edge
+        if (start > 0)
+        {
+            if ((distances[i + 1] - distances[i] > 10) && (inObj))
+            {
 
+                end = i;
+                if ((end - start) > 9)
+                {
 
+                    //calculate average angle of object
+                    int angle = (start + end) / 2;
+                    objectArr[numObjects].angle = angle;
 
+                    //distance of object
+                    float objectDistance = scannerPING(angle); //fails here sometime, check after sendObjectArr is fixed.
+                    objectArr[numObjects].distance = objectDistance;
 
+                    //radial width
+                    float width = 6.28 * objectDistance * (end - start)
+                            / (360.0 - (3.14 * (end - start)));
+                    objectArr[numObjects].width = width;
+                    numObjects = numObjects + 1;
+                }
+                inObj = false;
+                start = 0;
+            }
+        }
+    }
 
+    if (numObjects > 0)
+    {
+        //printObjectArr(objectArr, numObjects);
+        sendObjectArr(objectArr, numObjects); // Breaks the Program*** NEED FIXING
+    }
+}

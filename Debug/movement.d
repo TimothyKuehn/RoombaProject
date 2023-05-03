@@ -28,7 +28,7 @@ movement.obj: ../lcd.h
 movement.obj: ../movement.h
 movement.obj: C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/include/stdlib.h
 movement.obj: C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/include/stdlib.h
-movement.obj: U:/TempWorkspace/Lab7/uart-interrupt.h
+movement.obj: U:/TempWorkspace/FinalProject/uart-interrupt.h
 
 ../movement.c:
 
@@ -86,5 +86,5 @@ C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/include/stdlib.h:
 
 C:/ti/ccs1200/ccs/tools/compiler/ti-cgt-arm_20.2.6.LTS/include/stdlib.h:
 
-U:/TempWorkspace/Lab7/uart-interrupt.h:
+U:/TempWorkspace/FinalProject/uart-interrupt.h:
 
