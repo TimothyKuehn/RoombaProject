@@ -15,7 +15,6 @@
 #include <string.h>
 #include "uart-interrupt.h"
 #include "lcd.h"
-#include <cyBot_Scan.h>
 #include "movement.h"
 
 // These variables are declared as examples for your use in the interrupt handler.
