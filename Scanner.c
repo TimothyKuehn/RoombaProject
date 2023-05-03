@@ -19,7 +19,7 @@ void scannerIR()
     uint16_t last = 90;
     last = servo_move(0,last);
     int i;
-    for (i = 0; i < 180; i+=1)
+    for (i = 0; i < 181; i+=1)
     {
 
         last = servo_move(i,last);
@@ -29,7 +29,7 @@ void scannerIR()
             avg += adc_read();
         }
         rawVal[i] = (avg/10);
-        timer_waitMillis(40);
+        timer_waitMillis(80);
     }
 }
 
@@ -38,14 +38,14 @@ double scannerPING(int angle)
 {
     uint16_t last = 90;
     last = servo_move(angle,last);
-    timer_waitMillis(40);
+    timer_waitMillis(1000);
     int avg = 0;
-          int j;
-          for(j = 0; j < 10; ++j){
+        //  int j;
+         // for(j = 0; j < 10; ++j){
 
               avg = (avg + ping_getDistance()); //Likely the Problem
-          }
-          avg = (avg/10);
+        //  }
+         // avg = (avg/10);
           return avg;
     }
 

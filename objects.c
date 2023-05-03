@@ -42,11 +42,11 @@ void sendObjectArr(Objects *arr, int numObjects)
     char st[200] = "I";
     for (i = 0; i < numObjects; ++i)
     {
-        // int j;
-        //   for(j = 0; j< strlen(objects[i]); ++j){
-        char object[50];
-        strcpy(object, objects[i]);
-        strcat(st, object);
+       // int j;
+     //   for(j = 0; j< strlen(objects[i]); ++j){
+            char object[50];
+            strcpy(object, objects[i]);
+            strcat(st, object);
 
         if (numObjects - i > 1)
         {
@@ -188,7 +188,7 @@ void identifyObjects(float inputDistances[])
     {
 
         //detect first edge
-        if ((distances[i] - distances[i + 1] > 10) && (!inObj)) // may need to change the 90 once on the test field
+        if ((distances[i] - distances[i + 1] > 20) && (!inObj) && distances[i + 1]) // may need to change the 90 once on the test field
         {
             start = i;
             inObj = true;
@@ -201,7 +201,7 @@ void identifyObjects(float inputDistances[])
             {
 
                 end = i;
-                if ((end - start) > 9)
+                if ((end - start) > 8)
                 {
 
                     //calculate average angle of object
@@ -213,8 +213,7 @@ void identifyObjects(float inputDistances[])
                     objectArr[numObjects].distance = objectDistance;
 
                     //radial width
-                    float width = 6.28 * objectDistance * (end - start)
-                            / (360.0 - (3.14 * (end - start)));
+                    float width = 6.28 * objectDistance * (end - start) / (360.0);
                     objectArr[numObjects].width = width;
                     numObjects = numObjects + 1;
                 }
@@ -226,7 +225,9 @@ void identifyObjects(float inputDistances[])
 
     if (numObjects > 0)
     {
-        //printObjectArr(objectArr, numObjects);
-        sendObjectArr(objectArr, numObjects); // Breaks the Program*** NEED FIXING
+        sendObjectArr(objectArr,numObjects);
+    }
+    if (numObjects < 1){
+        uart_sendStr("K");
     }
 }

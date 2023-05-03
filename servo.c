@@ -32,9 +32,9 @@ void servo_init(void){
 }
 uint16_t servo_move(uint16_t degrees, uint16_t last){
 
-  double right = .45; //0 degrees
+  double right = .53; //0 degrees
 
-  double left = 2.2; //180 degrees
+  double left = 2.17; //180 degrees
 
   double degreetolowtime = ((left - right)/ 180) * (double)degrees + right;
 
