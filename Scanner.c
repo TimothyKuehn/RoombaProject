@@ -15,10 +15,7 @@ float rawVal[180];
 // This function uses a servo motor to move an infrared sensor to different angles and
 // records the raw sensor values for each angle
 void scannerIR()
-{
-    // Initialize the servo motor
-    //servo_init();
-    
+{   
     // Start at a default angle of 90 degrees
     uint16_t last = 90;
     last = servo_move(0,last);
