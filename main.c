@@ -1,11 +1,4 @@
-/**
- * lab6-interrupt_template.c
- *
- * Template file for CprE 288 Lab 6
- *
- * @author Diane Rover, 2/15/2020
- *
- */
+
 
 #include "uart-interrupt.h"
 #include "driverlib/interrupt.h"
