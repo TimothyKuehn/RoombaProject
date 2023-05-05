@@ -97,17 +97,11 @@ void TIMER3B_Handler(void){
 float ping_getDistance(void)
 { //calculate distance
     ping_trigger();
-//    while (STATE != DONE)
-//    {
-//    }
+
     timer_waitMillis(20);
     float value = START_TIME - END_TIME;
         value = ((value / 16000000.0) * (34000.0)) / 2.0;
-//    if (END_TIME > START_TIME)
-//    {
+
         return value;
-   // }
-//    value = value / 16000;
-//    value = value / 1000 * 343;
-//    value = value / 2 * 100;
+
 }

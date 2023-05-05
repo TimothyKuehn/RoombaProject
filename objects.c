@@ -59,113 +59,7 @@ void sendObjectArr(Objects *arr, int numObjects)
     uart_sendStr(st);
 
 }
-void clearObjects(Objects *arr)
-{
-//    int i;
-//    for (i = 0; i < 180; ++i)
-//    {
-//        arr[i].distance = 0;
-//        arr[i].width = 0;
-//        arr[i].angle = 0;
-//    }
-}
-void printObjectArr(Objects *arr, int numObjects)
-{
 
-    int i;
-    for (i = 0; i < numObjects; ++i)
-    {
-        float dist = arr[i].distance;
-        int angle = arr[i].angle;
-        float rad = arr[i].width;
-
-        printf("Object %d\n", i + 1);
-        printf("Distance %.2f\n", dist);
-        printf("Angle %d\n", angle);
-        printf("Radial Width %.2f\n", rad);
-        printf("\n");
-
-        //prints object number
-        char num[2];
-        sprintf(num, "%d", i + 1);
-        int b = 0;
-        for (b = 0; b < 2; ++b)
-        {
-            uart_sendChar(num[b]);
-        }
-
-        //prints a tab to the putty
-        int z;
-        char tab[] = "\t";
-        for (z = 0; z < 2; ++z)
-        {
-            uart_sendChar(tab[z]);
-        }
-        printf("\t");
-
-        //prints the distance in putty
-        char dis[10];
-        sprintf(dis, "%.2f", dist);
-        int l = strlen(dis);
-        int j;
-        for (j = 0; j < l; ++j)
-        {
-            uart_sendChar(dis[j]);
-            printf("%c", dis[j]);
-        }
-
-        //prints a tab to the putty
-        int g;
-        char tab2[] = "\t";
-        for (g = 0; g < 2; ++g)
-        {
-            uart_sendChar(tab2[g]);
-        }
-        printf("\t");
-
-        //angle to putty
-        char ang[5];
-        sprintf(ang, "%d", angle);
-        int len = strlen(ang);
-        int h;
-        for (h = 0; h < len; ++h)
-        {
-            uart_sendChar(ang[h]);
-            printf("%c", ang[h]);
-        }
-
-        //prints a tab to the putty
-        int v;
-        char tab3[] = "\t";
-        for (v = 0; v < 2; ++v)
-        {
-            uart_sendChar(tab3[v]);
-        }
-        printf("\t");
-
-        //prints the radialWidth in putty
-        char rw[10];
-        sprintf(rw, "%.2f", rad);
-        int x = strlen(rw);
-        int c;
-        for (c = 0; c < x; ++c)
-        {
-            uart_sendChar(rw[c]);
-            printf("%c", rw[c]);
-        }
-
-        //sends a newline and return to the putty
-        int k;
-        char newLine[] = "\n\r";
-        for (k = 0; k < 4; ++k)
-        {
-            uart_sendChar(newLine[k]);
-        }
-        //cyBot_sendByte("\n");
-        printf("\n");
-    }
-
-}
 
 void identifyObjects(float inputDistances[])
 {
@@ -178,7 +72,6 @@ void identifyObjects(float inputDistances[])
     }
 
     Objects objectArr[20];
-    clearObjects(objectArr);
     int numObjects = 0;
     int i;
     int start = 0;

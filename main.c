@@ -37,8 +37,8 @@ int main(void)
     uart_interrupt_init();
     servo_init();
     ping_init();
-    //  char startupMessage[] = "STARTUP MESSAGE";
-    // lcd_printf(startupMessage);
+    char startupMessage[] = "AHOY MATEY!";
+    lcd_printf(startupMessage);
     float distanceMoved;
     float angleTurned;
     while (1)

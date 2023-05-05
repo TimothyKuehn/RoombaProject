@@ -29,7 +29,7 @@ void scannerIR()
             avg += adc_read();
         }
         rawVal[i] = (avg/10);
-        timer_waitMillis(80);
+        timer_waitMillis(45);
     }
 }
 

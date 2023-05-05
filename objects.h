@@ -31,8 +31,7 @@ typedef struct{
 
 void identifyObjects(float inputDistances[]);
 void sendObjectArr(Objects *arr, int numObjects);
-void clearObjects(Objects* arr);
-void printObjectArr(Objects *arr, int numObjects);
+
 
 
 #endif /* OBJECTS_H_ */
