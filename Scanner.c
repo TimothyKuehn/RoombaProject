@@ -9,42 +9,51 @@
 #include "lcd.h"
 #include "ping.h"
 
-
-
+// Define an array to store the raw sensor values
 float rawVal[180];
-void scannerIR() //Use IR to scan 180 degrees, this data is used for object detection
+
+// This function uses a servo motor to move an infrared sensor to different angles and
+// records the raw sensor values for each angle
+void scannerIR()
 {
-
+    // Initialize the servo motor
+    //servo_init();
+    
+    // Start at a default angle of 90 degrees
     uint16_t last = 90;
-    last = servo_move(0,last);//Start at 0
-	
-    int i;
-    for (i = 0; i < 181; i+=1)
+    last = servo_move(0,last);
+    
+    // Move the servo to each angle from 0 to 180 degrees and record the raw sensor value
+    for (int i = 0; i < 181; i+=1)
     {
-
+        // Move the servo to the current angle
         last = servo_move(i,last);
+        
+        // Take the average of 10 sensor readings
         int avg = 0;
-        int j;
-        for(j = 0; j < 10; ++j){
+        for(int j = 0; j < 10; ++j){
             avg += adc_read();
         }
-        rawVal[i] = (avg/10); //Avg of 10 IR values
-		
-        timer_waitMillis(45); //Wait 45ms between movement and scan
+        rawVal[i] = (avg/10);
+        
+        // Wait for a short amount of time before moving to the next angle
+        timer_waitMillis(45);
     }
 }
 
-
-double scannerPING(int angle) //Gets ping distance of a detected objects at the object's angle
+// This function moves a servo motor to a specified angle and returns the distance
+// measured by a PING sensor at that angle
+double scannerPING(int angle)
 {
+    // Start at a default angle of 90 degrees
     uint16_t last = 90;
     last = servo_move(angle,last);
+    
+    // Wait for the servo to settle before taking a sensor reading
     timer_waitMillis(1000);
-    int avg = 0; 
-
-              avg = (avg + ping_getDistance()); // Previously was averaging ping - but it can give bad results at times
-       
-          return avg;
-    }
-
+    
+    // Take a single PING sensor reading and return the distance
+    int avg = ping_getDistance();
+    return avg;
+}
 
