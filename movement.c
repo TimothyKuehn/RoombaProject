@@ -31,7 +31,7 @@ double move_forward(oi_t *sensor_data, double distance_mm)
         {
             stop();
             sprintf(string, "C1");
-            uart_sendStr(string);
+            uart_sendStr(string); //Sends GUI location of Cliff Sensor triggered
             return sum;
         }
         if (sensor_data->cliffFrontRight)
@@ -121,7 +121,7 @@ double move_backward(oi_t *sensor_data, double distance_mm)
     return (-1 * sum);
 }
 
-//stops the bot and backs up to scan
+//stops the bot
 void stop()
 {
     oi_setWheels(0, 0); //stop
