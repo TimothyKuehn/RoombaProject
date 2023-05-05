@@ -1,9 +1,11 @@
-/*
+/**
+ * 
  * objects.c
- *
- *  Created on: Feb 18, 2023
- *      Author: mdwells
- */
+ * 
+ * Created Feb 18, 2023
+ *    @author mdwells
+ * 
+ **/
 
 #include <stdio.h>
 #include <stdint.h>
@@ -19,62 +21,64 @@
 #include "Scanner.h"
 #include "ping.h"
 
+// Structure for representing detected objects
 typedef struct
 {
-    float distance;
-    int angle;
-    float width;
+float distance;
+int angle;
+float width;
 } Objects;
 
-void sendObjectArr(Objects *arr, int numObjects) //This function formats the objects data to a single string and sends to Java GUI
+// Function for sending the array of detected objects over UART
+void sendObjectArr(Objects *arr, int numObjects)
 {
-
-    char objects[10][50]; //Create 2D array for object's data
+    // Create a string array
+    char objects[10][50];
     int i;
-    
-	//Move object data to an array of strings
-	for (i = 0; i < numObjects; ++i)
+    for (i = 0; i < numObjects; ++i)
     {
         float dist = arr[i].distance;
         int angle = arr[i].angle;
         float rad = arr[i].width;
-        sprintf(objects[i], "%d!%.2f!%.2f", angle, dist, rad); //Move string to 2D array
+        // Create a string for the object and put into the sting array
+        sprintf(objects[i], "%d!%.2f!%.2f", angle, dist, rad); 
     }
 
-    char st[200] = "I"; //I is the indicator for GUI to know this is the data of a detected object
+
+    char st[200] = "I"; // Trigger identifier "I"
     for (i = 0; i < numObjects; ++i)
     {
-            char object[50];
-            strcpy(object, objects[i]);
-            strcat(st, object); // concatenate the object onto "I" indicator
+        char object[50];
+        strcpy(object, objects[i]); // Pull a single object from the string array
+        strcat(st, object); // Concatenate the object onto st
 
+        // Checks if there is another object to add
         if (numObjects - i > 1)
         {
             char end[] = "@"; 
-            strcat(st, end); //If there is more than 1 object add "@" in between the object's data
+            strcat(st, end); // Concatenate an indicator for a new object in st
         }
     }
 
-    printf(st); 
-    uart_sendStr(st); // Sends object's data to GUI
-
+    printf(st);
+    uart_sendStr(st);
 }
 
-
-void identifyObjects(float inputDistances[]) // Object detection
+// function for identifying objects in the scanner's field of view
+void identifyObjects(float inputDistances[])
 {
-    flag_s = false; //Resets the scan flag
+    flag_s = false; // Reset the flag
     int j;
     float distances[180];
-	
-	// Moves inputDistances[] to distances array and scales the inverse IR value for easier use in object detection
+    
+    // Invert and scale the IR values
     for (j = 0; j < 180; j++)
     {
-        distances[j] = 100000 / (*(inputDistances + j)); 
+        distances[j] = 100000 / (*(inputDistances + j));
     }
 
     Objects objectArr[20];
-    int numObjects = 0; 
+    int numObjects = 0;
     int i;
     int start = 0;
     int end = 0;
@@ -82,31 +86,29 @@ void identifyObjects(float inputDistances[]) // Object detection
 	
     for (i = 0; i < 179; ++i)
     {
-
         //detect first edge
-        if ((distances[i] - distances[i + 1] > 20) && (!inObj) && distances[i + 1]) // If there a drop in IR value from previous IR value greater than 20 set that as first edge.
+        if ((distances[i] - distances[i + 1] > 20) && // If the next angle has a signifigantly lower distance
+            (!inObj) && // If not currently in an object
+            distances[i + 1]) // If there is a next angle
         {
-            start = i; //Object starts at angle i
+            start = i;
             inObj = true;
         }
 
         //detect second edge
-        if (start > 0) //Object can't start at first angle
+        if (start > 0)
         {
-            if ((distances[i + 1] - distances[i] > 10) && (inObj)) //if the IR value goes up by more than 10 from the previous IR value set as end of object.
+            if ((distances[i + 1] - distances[i] > 10) && (inObj))
             {
-
-                end = i; //Object ends at angle i
-                
-				if ((end - start) > 8) //Dectected object must be greater than a total angle of 8 to be consider a real object.
+                end = i;
+                if ((end - start) > 8)
                 {
-
                     //calculate average angle of object
                     int angle = (start + end) / 2;
                     objectArr[numObjects].angle = angle;
 
                     //distance of object
-                    float objectDistance = scannerPING(angle); //Uses ping at objects location to get accurate distance
+                    float objectDistance = scannerPING(angle);
                     objectArr[numObjects].distance = objectDistance;
 
                     //radial width
@@ -115,18 +117,22 @@ void identifyObjects(float inputDistances[]) // Object detection
 					
                     numObjects = numObjects + 1; //Number of objects detected
                 }
-                inObj = false; //Set's inObj to false so new object can be detected
+            
+                // Reset object boolean and start angle
+                inObj = false;
                 start = 0;
             }
         }
     }
-
-    if (numObjects > 0) // If any objects were detected, send formated data to GUI
+    
+    // Send the object array to the GUI
+    if (numObjects > 0)
     {
-        sendObjectArr(objectArr,numObjects);
+       sendObjectArr(objectArr,numObjects);
     }
-    if (numObjects < 1) // Sends a "K" to let GUI scan completed with zero objects detected.
-	{ 
-        uart_sendStr("K");
+    
+    // Send an indicator that no objects were found
+    if (numObjects < 1){
+       uart_sendStr("K");
     }
 }
