@@ -28,85 +28,100 @@
 
 int main(void)
 {
-    timer_init(); // Must be called before lcd_init(), which uses timer functions
-    oi_t *sensor_data = oi_alloc(); // do this only once at start of main()
-    oi_init(sensor_data); // do this only once at start of main()
-    lcd_init();
-    adc_init();
-    uart_interrupt_init();
-    servo_init();
-    ping_init();
-  //  char startupMessage[] = "STARTUP MESSAGE";
-   // lcd_printf(startupMessage);
+    // Initialize various components and sensors
+    timer_init(); // Initialize timer
+    oi_t *sensor_data = oi_alloc(); // Allocate memory for sensor data
+    oi_init(sensor_data); // Initialize the sensor data
+    lcd_init(); // Initialize LCD display
+    adc_init(); // Initialize analog-to-digital converter
+    uart_interrupt_init(); // Initialize UART interrupt
+    servo_init(); // Initialize servo motor
+    ping_init(); // Initialize ultrasonic sensor
+
+    // Variables for tracking distance moved and angle turned
     float distanceMoved;
     float angleTurned;
+
     while (1)
     {
-        distanceMoved = 0;
-        angleTurned = 0;
+        distanceMoved = 0; // Reset distanceMoved to 0
+        angleTurned = 0; // Reset angleTurned to 0
 
+        // Check if a flag has been set to move forward
         if (flag_m)
         {
-            distanceMoved = move_forward(sensor_data, 100);
+            distanceMoved = move_forward(sensor_data, 100); // Move forward 100 units
             char returnString[20];
-            sprintf(returnString, "D0!%f", distanceMoved);
-            uart_sendStr(returnString);
-            flag_m = false;
+            sprintf(returnString, "D0!%f", distanceMoved); // Format a string with the distance moved
+            uart_sendStr(returnString); // Send the string over UART
+            flag_m = false; // Reset the flag
         }
 
+        // Check if a flag has been set to turn left at 90 degrees
         if (flag_1)
         {
-            angleTurned = turn_left(sensor_data, 90);
+            angleTurned = turn_left(sensor_data, 90); // Turn left 90 degrees
             char returnString[20];
-            sprintf(returnString, "D%f!0", angleTurned);
-            uart_sendStr(returnString);
-            flag_1 = false;
+            sprintf(returnString, "D%f!0", angleTurned); // Format a string with the angle turned
+            uart_sendStr(returnString); // Send the string over UART
+            flag_1 = false; // Reset the flag
         }
+
+        // Check if a flag has been set to turn left at 45 degrees
         if (flag_2)
         {
-            angleTurned = turn_left(sensor_data, 45);
+            angleTurned = turn_left(sensor_data, 45); // Turn left 45 degrees
             char returnString[20];
-            sprintf(returnString, "D%f!0", angleTurned);
-            uart_sendStr(returnString);
-            flag_2 = false;
+            sprintf(returnString, "D%f!0", angleTurned); // Format a string with the angle turned
+            uart_sendStr(returnString); // Send the string over UART
+            flag_2 = false; // Reset the flag
         }
+
+        // Check if a flag has been set to turn left at 15 degrees
         if (flag_3)
         {
-            angleTurned = turn_left(sensor_data, 15);
+            angleTurned = turn_left(sensor_data, 15); // Turn left 15 degrees
             char returnString[20];
-            sprintf(returnString, "D%f!0", angleTurned);
-            uart_sendStr(returnString);
-            flag_3 = false;
+            sprintf(returnString, "D%f!0", angleTurned); // Format a string with the angle turned
+            uart_sendStr(returnString); // Send the string over UART
+            flag_3 = false; // Reset the flag
         }
+
+        // Check if a flag has been set to perform an IR scan
         if (flag_s)
         {
-            scannerIR();
-            identifyObjects(rawVal);
-
+            scannerIR(); // Perform an IR scan
+            identifyObjects(rawVal); // Identify objects in the scan
         }
+        
+        // Check if a flag has been set to turn right 15 degrees
         if (flag_4)
         {
-            angleTurned = turn_right(sensor_data, 15);
-            char returnString[20];
-            sprintf(returnString, "D%f!0", angleTurned);
-            uart_sendStr(returnString);
-            flag_4 = false;
+            angleTurned = turn_right(sensor_data, 15); // Turn right 15 degrees
+            char returnString[20]; 
+            sprintf(returnString, "D%f!0", angleTurned); // Format a string with the angle returned
+            uart_sendStr(returnString); //Send the string over UART
+            flag_4 = false; // Reset the flag
         }
+        
+        // Check if a flag has been set to turn right 45 degrees
         if (flag_5)
         {
-            angleTurned = turn_right(sensor_data, 45);
+            angleTurned = turn_right(sensor_data, 45); // Turn right 45 degrees
             char returnString[20];
-            sprintf(returnString, "D%f!0", angleTurned);
-            uart_sendStr(returnString);
-            flag_5 = false;
+            sprintf(returnString, "D%f!0", angleTurned); // Format a string with the angle returned
+            uart_sendStr(returnString); // Send the string over UART
+            flag_5 = false; // Reset the string
         }
+        
+        //Check if a flag has been set to turn right 90 degrees
         if (flag_6)
         {
-            angleTurned = turn_right(sensor_data, 90);
+            angleTurned = turn_right(sensor_data, 90); // Turn right 90 degrees
             char returnString[20];
-            sprintf(returnString, "D%f!0", angleTurned);
-            uart_sendStr(returnString);
-            flag_6 = false;
+            sprintf(returnString, "D%f!0", angleTurned); // Format a string with the angle returned
+            uart_sendStr(returnString); // Send the string over UART
+            flag_6 = false; // Reset the flag
 
         }
 
