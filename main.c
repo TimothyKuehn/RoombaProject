@@ -29,7 +29,7 @@
 
 int main(void)
 {
-	// Initialize various components and sensors
+    // Initialize various components and sensors
     timer_init(); // Initialize timer
     oi_t *sensor_data = oi_alloc(); // Allocate memory for sensor data
     oi_init(sensor_data); // Initialize the sensor data
@@ -38,20 +38,21 @@ int main(void)
     uart_interrupt_init(); // Initialize UART interrupt
     servo_init(); // Initialize servo motor
     ping_init(); // Initialize ultrasonic sensor
-	
-    char startupMessage[] = "AHOY MATEY!";
-    lcd_printf(startupMessage);// Print Ahoy message to LCD
-	
-	// Variables for tracking distance moved and angle turned
+
+    // Variables for tracking distance moved and angle turned
     float distanceMoved;
     float angleTurned;
-	
+    
+    // Print a pirate greeting to the LCD
+    char startupMessage[] = "AHOY MATEY!";
+    lcd_printf(startupMessage);
+
     while (1)
     {
         distanceMoved = 0; // Reset distanceMoved to 0
         angleTurned = 0; // Reset angleTurned to 0
 
-		 // Check if a flag has been set to move forward
+        // Check if a flag has been set to move forward
         if (flag_m)
         {
             distanceMoved = move_forward(sensor_data, 100); // Move forward 100 units
@@ -60,18 +61,18 @@ int main(void)
             uart_sendStr(returnString); // Send the string over UART
             flag_m = false; // Reset the flag
         }
-		
-		// Check if a flag has been set to move backwards
+        
+        // Check if a flag has been set to move backward
         if (flag_r)
         {
-            distanceMoved = move_backward(sensor_data, 50); // Move back 100 units
+            distanceMoved = move_backward(sensor_data, 50); // Move backward 50 units
             char returnString[20];
-            sprintf(returnString, "D0!%f", distanceMoved); // Format a string with the distance moved
+            sprintf(returnString, "D0!%lf", distanceMoved); // Format a string with the distance moved
             uart_sendStr(returnString); // Send the string over UART
             flag_r = false; // Reset the flag
         }
-		
-		// Check if a flag has been set to turn left at 90 degrees
+
+        // Check if a flag has been set to turn left at 90 degrees
         if (flag_1)
         {
             angleTurned = turn_left(sensor_data, 90); // Turn left 90 degrees
@@ -80,8 +81,8 @@ int main(void)
             uart_sendStr(returnString); // Send the string over UART
             flag_1 = false; // Reset the flag
         }
-		
-		// Check if a flag has been set to turn left at 45 degrees
+
+        // Check if a flag has been set to turn left at 45 degrees
         if (flag_2)
         {
             angleTurned = turn_left(sensor_data, 45); // Turn left 45 degrees
@@ -136,16 +137,15 @@ int main(void)
             sprintf(returnString, "D%f!0", angleTurned); // Format a string with the angle returned
             uart_sendStr(returnString); // Send the string over UART
             flag_6 = false; // Reset the flag
+
         }
-		
-		//Check if a flag has been set to play wellerman sea shanty music
+        
+        // Check if a flag has been set to play a song 
         if (flag_c)
         {
-            load_songs(); //Loads the Wellerman
-            play_songs(1); //Plays the Wellerman
-            flag_c = false; //Reset the flag
+            load_songs();
+            play_songs(1); // Play song number 1 "Wellerman" Sea Shanty
+            flag_c = false; // Reset the flag
         }
-
     }
-
 }
